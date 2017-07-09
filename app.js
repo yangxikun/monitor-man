@@ -72,7 +72,7 @@ var redis = require("redis");
 var redisWrapper = require('co-redis');
 
 getRedis = function () {
-  var redisClient = redis.createClient(6379, '127.0.0.1', {retry_strategy: function (options) {
+  var redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, {retry_strategy: function (options) {
     return undefined;
   }});
   redisClient.on('error', function (err) {
