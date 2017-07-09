@@ -13,5 +13,8 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 1. set redis info `export REDIS_HOST=127.0.0.1;export REDIS_PORT=6379` (monitor-man reply on redis to store all information)
 1. run `node bin/www`
 
+## Doc
+see [Wiki](https://github.com/yangxikun/monitor-man/wiki)
+
 ## License
 This software is licensed under MIT. See the [LICENSE](LICENSE) file for more information.
