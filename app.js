@@ -77,7 +77,9 @@ getRedis = function () {
   redisClient.on('error', function (err) {
     console.log(err);
   });
-  redisClient.auth('123456');
+  if (process.env.REDIS_AUTH) {
+    redisClient.auth(process.env.REDIS_AUTH);
+  }
   return redisClient;
 };
 
