@@ -81,13 +81,13 @@ router.get('/create', function (req, res) {
 router.get('/update/:id', co(function* (req, res, next) {
   var redisCo = getRedisCo();
   var reply = yield redisCo.hget('newman-web-collections', req.params.id);
-  var cObj = JSON.parse(reply);
+  var collection = JSON.parse(reply);
   reply = yield redisCo.hgetall('newman-web-handlers');
   var handlers = [];
   for (var key in reply) {
     var obj = JSON.parse(reply[key]);
     var selected = false;
-    if (key === cObj.handler) {
+    if (key === collection.handler) {
       selected = true;
     }
     handlers.push({
@@ -96,7 +96,7 @@ router.get('/update/:id', co(function* (req, res, next) {
       selected: selected
     });
   }
-  res.render('collection/update', {collection: cObj, handlers: handlers, page: 'collection'})
+  res.render('collection/update', {collection: collection, handlers: handlers, page: 'collection'})
 }));
 
 router.post('/', upload.fields([{name: 'collection-file', maxCount: 1}, {name: 'iterationData', maxCount: 1}, {name: 'environment', maxCount: 1}]), co(function* (req, res, next) {
@@ -273,6 +273,8 @@ router.post('/update/:id', upload.fields([
   req.params.cObj = cObj;
   var collectionInfo = yield client.hget('newman-web-collections', req.params.id);
   collectionInfo = JSON.parse(collectionInfo);
+  collectionInfo.name = cObj.name;
+  collectionInfo.description = cObj.description.content;
   collectionInfo.interval = Number(req.body.interval);
   collectionInfo.handler = req.body.handler;
   collectionInfo.handlerParams = req.body.handlerParams;
