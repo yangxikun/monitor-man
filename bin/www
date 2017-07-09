@@ -1,0 +1,149 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var intervalIds = require('../intervalIds');
+var debug = require('debug')('newman-web:server');
+var http = require('http');
+var fs = require("fs");
+var Collection = require('postman-collection').Collection;
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+
+  // sync local file with redis data
+  var client = getRedis();
+  client.hgetall('newman-web-collections', function (err, collectionInfos) {
+    if (err) {
+      throw err;
+    }
+    for (var id in collectionInfos) {
+      var collection = JSON.parse(collectionInfos[id]);
+      restoreCollection(collection);
+    }
+  });
+}
+
+function restoreCollection(collection) {
+  var client = getRedis();
+  client.multi()
+    .hget('newman-web-iterationData', collection.id)
+    .hget('newman-web-enviroment', collection.id)
+    .hget('newman-web-collectionFile', collection.id)
+    .exec(function (err, reply) {
+      if (err) {
+        throw err;
+      }
+      if (!reply[2]) {
+        throw new Error(collection.name + ' ' + collection.id + 'collection file not found!');
+      }
+      if (!fs.existsSync(collection.collectionFile)) {
+        fs.writeFileSync(collection.collectionFile, reply[2])
+      }
+      var cObj = new Collection(JSON.parse(reply[2]));
+      var newmanOption = Object.assign({
+        collection: cObj,
+        abortOnError: true
+      }, collection.newmanOption);
+      if (newmanOption.timeoutRequest === 0) {
+        delete newmanOption.timeoutRequest;
+      }
+      if (reply[0]) {
+        if (!fs.existsSync(newmanOption.iterationData)) {
+          fs.writeFileSync(newmanOption.iterationData, reply[0]);
+        }
+      }
+      if (reply[1]) {
+        if (!fs.existsSync(newmanOption.environment)) {
+          fs.writeFileSync(newmanOption.environment, reply[1]);
+        }
+      }
+      if (collection.status === 'run') {
+        var intervalId = setInterval(function () {
+          newmanInterval(newmanOption)
+        }, collection.interval);
+        intervalIds.add(collection.id, intervalId);
+        console.log("restore " + collection.id);
+      }
+    });
+}

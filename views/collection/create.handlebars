@@ -1,0 +1,81 @@
+<style>
+    .form-group.required .control-label:before {
+        content:"* ";
+        color:red;
+    }
+    .help-inline {
+        color: #737373;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p>see <a href="https://github.com/postmanlabs/newman#newmanrunoptions-object--callback-function--run-eventemitter">newman.run options</a> for more information.</p>
+            <form action="/collection" method="post" enctype="multipart/form-data">
+                <div class="form-group required">
+                    <label class="control-label">collection</label>
+                    <input type="file" name="collection-file">
+                    <p class="help-block" style="margin-bottom: 0px">Postman Collection JSON file</p>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label">interval(ms)</label>
+                    <input type="text" name="interval" class="form-control" value="60000">
+                </div>
+                <div class="form-group required">
+                    <label class="control-label">timeoutRequest(ms)</label>
+                    <input type="text" name="timeoutRequest" class="form-control" value="0">
+                    <p class="help-block" style="margin-bottom: 0px">0 indicate Infinity</p>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label">delayRequest(ms)</label>
+                    <input type="text" name="delayRequest" class="form-control" value="0">
+                </div>
+                <div class="form-group required">
+                    <label class="control-label">iterationCount</label>
+                    <input type="text" name="iterationCount" class="form-control" value="1">
+                </div>
+                <div class="form-group">
+                    <label>iterationData</label>
+                    <input type="file" name="iterationData">
+                    <p class="help-block">JSON or CSV file to be used as data source when running multiple iterations on a collection.</p>
+                </div>
+                <div class="form-group">
+                    <label>environment</label>
+                    <input type="file" name="environment">
+                </div>
+                <div class="form-group">
+                    <label>handler</label>
+                    <select class="form-control" name="handler" style="width: auto">
+                        <option value=""></option>
+                        {{#each handlers}}
+                        <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="help-block">Failure handler(eg send some alert...)</p>
+                </div>
+                <div class="form-group">
+                    <label>handler params</label>
+                    <textarea class="form-control" name="handlerParams" rows="5"></textarea>
+                    <p class="help-block">params pass to handler, must be json string</p>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ignoreRedirects"> ignoreRedirects<span class="help-inline">(This specifies whether newman would automatically follow 3xx responses from servers.)</span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="insecure"> insecure<span class="help-inline">(Disables SSL verification checks and allows self-signed SSL certificates.)</span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="bail"> bail<span class="help-inline">(Switch to specify whether or not to gracefully stop a collection run on encountering the first error.)</span>
+                    </label>
+                </div>
+                <button id="form" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
