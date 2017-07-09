@@ -14,4 +14,4 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 1. run `node bin/www`
 
 ## License
-This software is licensed under MIT. See the [LICENSE.md](LICENSE.md) file for more information.
+This software is licensed under MIT. See the [LICENSE](LICENSE) file for more information.
