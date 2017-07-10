@@ -71,15 +71,21 @@ var redis = require("redis");
 var redisWrapper = require('co-redis');
 
 getRedis = function () {
-  var redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, {retry_strategy: function (options) {
-    return undefined;
-  }});
+  var options = {
+    retry_strategy: function (options) {
+      return undefined;
+    }
+  };
+  if (process.env.REDIS_AUTH) {
+    options['password'] = process.env.REDIS_AUTH;
+  }
+  if (process.env.REDIS_DB) {
+    options['db'] = process.env.REDIS_DB;
+  }
+  var redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, options);
   redisClient.on('error', function (err) {
     console.log(err);
   });
-  if (process.env.REDIS_AUTH) {
-    redisClient.auth(process.env.REDIS_AUTH);
-  }
   return redisClient;
 };
 
