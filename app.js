@@ -159,10 +159,13 @@ newmanInterval = function (newmanOption) {
             var request = require('postman-request');
             var sprintf = require("sprintf-js").sprintf;
             var vsprintf = require("sprintf-js").vsprintf;
+            var client = getRedisCo();
+            var co = require('co');
             var context = {
               console: console,
               summary: summary,
               redis: client,
+              co: co,
               request: request,
               date: date,
               sprintf: sprintf,
