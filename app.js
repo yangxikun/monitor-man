@@ -10,6 +10,7 @@ var co = require('co-express');
 var safeEval = require('safe-eval');
 var newman = require('newman');
 var date = require('date-and-time');
+var log4js = require('log4js');
 var intervalIds = require('./intervalIds');
 
 var index = require('./routes/index');
@@ -69,6 +70,11 @@ module.exports = app;
 // global helper function
 var redis = require("redis");
 var redisWrapper = require('co-redis');
+var redisLogger = log4js.getLogger('redis');
+redisLogger.level = 'debug';
+if (process.env.LOG_LEVEL) {
+  redisLogger.level = process.env.LOG_LEVEL;
+}
 
 getRedis = function () {
   var options = {
@@ -84,7 +90,7 @@ getRedis = function () {
   }
   var redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, options);
   redisClient.on('error', function (err) {
-    console.log(err);
+    redisLogger.error(err);
   });
   return redisClient;
 };
@@ -99,26 +105,32 @@ err400 = function (message) {
   return err
 };
 
-newmanInterval = function (newmanOption) {
+var newmanIntervalLogger = log4js.getLogger('newmanInterval');
+newmanIntervalLogger.level = 'debug';
+if (process.env.LOG_LEVEL) {
+  newmanIntervalLogger.level = process.env.LOG_LEVEL;
+}
+
+newmanInterval = function (newmanOption, collectionId) {
   newman.run(newmanOption, function (err, summary) {
     if (err) {
-      clearInterval(intervalIds.get(summary.collection.id));
-      intervalIds.del(summary.collection.id);
-      console.log(err);
+      clearInterval(intervalIds.get(collectionId));
+      intervalIds.del(collectionId);
+      newmanIntervalLogger.error(err);
       return;
     }
-    console.log('collection#' + summary.collection.id + ' run complete!');
+    newmanIntervalLogger.info('collection#' + summary.collection.id + ' run complete!');
 
     // update run result
     var client = getRedis();
     client.hget('newman-web-collections', summary.collection.id, function (err, reply) {
       if (err) {
-        console.log(err);
+        newmanIntervalLogger.error(err);
         return;
       }
       var cObj = JSON.parse(reply);
       if (cObj === null) {
-        console.log("cannot get collection info "+summary.collection.id);
+        newmanIntervalLogger.error("cannot get collection info "+summary.collection.id);
         clearInterval(intervalIds.get(summary.collection.id));
         intervalIds.del(summary.collection.id);
         return
@@ -142,7 +154,7 @@ newmanInterval = function (newmanOption) {
       };
       client.hset('newman-web-collections', summary.collection.id, JSON.stringify(cObj), function (err, reply) {
         if (err) {
-          console.log(err)
+          newmanIntervalLogger.error(err)
         }
       });
 
@@ -176,7 +188,7 @@ newmanInterval = function (newmanOption) {
             try {
               safeEval(obj.script, context);
             } catch (err) {
-              console.log(err)
+              newmanIntervalLogger.error(err)
             }
           })
         }

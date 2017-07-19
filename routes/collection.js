@@ -35,7 +35,7 @@ var updateOrCreateCollection = function (req, res, next) {
     clearInterval(intervalIds.get(cObj.id));
 
     var intervalId = setInterval(function () {
-      newmanInterval(newmanOption);
+      newmanInterval(newmanOption, cObj.id);
     }, req.body.interval);
 
     intervalIds.add(cObj.id, intervalId);
@@ -135,7 +135,7 @@ router.post('/', upload.fields([{name: 'collection-file', maxCount: 1}, {name: '
     return
   }
 
-  var ignoreRedirects = false, insecure = false, bail = false, handlerParams = '{}';
+  var ignoreRedirects = false, insecure = false, bail = false;
   if (req.body.ignoreRedirects) {
     ignoreRedirects = true;
   }
@@ -212,7 +212,7 @@ router.post('/run/:id', co(function* (req, res) {
     delete newmanOption.timeoutRequest;
   }
   var intervalId = setInterval(function () {
-    newmanInterval(newmanOption);
+    newmanInterval(newmanOption, req.params.id);
   }, collectionInfo.interval);
   intervalIds.add(req.params.id, intervalId);
   collectionInfo.status = 'run';
@@ -298,7 +298,6 @@ router.post('/update/:id', upload.fields([
 
 router.get('/:id', function (req, res, next) {
   var client = getRedis();
-  var collection;
   client.hget('newman-web-collections', req.params.id, function (err, reply) {
     if (err) {
       next(err);

@@ -10,6 +10,7 @@ var debug = require('debug')('newman-web:server');
 var http = require('http');
 var fs = require("fs");
 var Collection = require('postman-collection').Collection;
+var log4js = require('log4js');
 
 /**
  * Get port from environment and store in Express.
@@ -105,6 +106,11 @@ function onListening() {
 }
 
 function restoreCollection(collection) {
+  var logger = log4js.getLogger('restoreCollection');
+  logger.level = 'debug';
+  if (process.env.LOG_LEVEL) {
+      logger.level = process.env.LOG_LEVEL;
+  }
   var client = getRedis();
   client.multi()
     .hget('newman-web-iterationData', collection.id)
@@ -140,10 +146,10 @@ function restoreCollection(collection) {
       }
       if (collection.status === 'run') {
         var intervalId = setInterval(function () {
-          newmanInterval(newmanOption)
+          newmanInterval(newmanOption, collection.id)
         }, collection.interval);
         intervalIds.add(collection.id, intervalId);
-        console.log("restore " + collection.id);
+        logger.info("restore " + collection.id);
       }
     });
 }

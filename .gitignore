@@ -1,3 +1,4 @@
 node_modules
 upload
 *.un~
+.idea
