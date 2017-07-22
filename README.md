@@ -21,7 +21,7 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 
 #### BY Docker
 
-1. `docker pull yangxikun/monitor-man`
+1. `docker pull yangxikun/monitor-man`(https://hub.docker.com/r/yangxikun/monitor-man/)
 1. `docker run --env REDIS_HOST=10.17.48.200 --env REDIS_PORT=6379 --env TIMEZONE=Asia/Shanghai -p 3000:3000 yangxikun/monitor-man:1.0.0`
 1. now, visit http://127.0.0.1:3000
 
