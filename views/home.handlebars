@@ -2,6 +2,9 @@
     .panel-body .btn {
         margin-top: 6px;
     }
+    .panel-body .warning {
+        background-color: #f2dede;;
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -14,15 +17,11 @@
                         <h4>{{name}} <small>{{id}}</small></h4>
                     </a>
                     <p>{{description}}</p>
-                    <p>
+                    <p {{#if_or last.assertions.failed last.testScripts.failed}} class="warning" {{/if_or}} style="display: inline-block;padding: 2px 6px 5px 5px; margin: 0 0 10px 0;">
                         {{#if_req status 'run'}}
-                        <a data-name="{{name}}" data-id="{{id}}" data-action="stop" class="status-modal btn btn-success btn-xs">
-                            <span>running</span>
-                        </a>
+                            <a data-name="{{name}}" data-id="{{id}}" data-action="stop" class="status-modal btn btn-success btn-xs"><span>running</span></a>
                         {{else}}
-                        <a data-name="{{name}}" data-id="{{id}}" data-action="run" class="status-modal btn btn-danger btn-xs">
-                            <span>stop</span>
-                        </a>
+                            <a data-name="{{name}}" data-id="{{id}}" data-action="run" class="status-modal btn btn-danger btn-xs"><span>stop</span></a>
                         {{/if_req}}
                         {{#if last}}
                         <button class="btn btn-primary btn-xs" type="button" disabled="disabled">

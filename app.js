@@ -30,6 +30,12 @@ var hbs = exphbs.create({
         return opts.fn(this);
       else
         return opts.inverse(this);
+    },
+    if_or: function (a, b, opts) {
+      if (a || b)
+        return opts.fn(this);
+      else
+        return opts.inverse(this);
     }
   }
 });

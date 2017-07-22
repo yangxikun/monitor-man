@@ -7,10 +7,13 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 1. monitor-man will setup a newman for monitor your test
 
 ## Setup
+
+#### By Node
 1. git clone this project
 1. run `npm install`
 1. change listening port `export PORT=9200`
 1. set redis info `export REDIS_HOST=127.0.0.1;export REDIS_PORT=6379` (monitor-man reply on redis to store all information)
+1. set log level `export LOG_LEVEL=debug`(default, see [log4js](https://www.npmjs.com/package/log4js))
 1. run `node bin/www`
 
 ## Doc
