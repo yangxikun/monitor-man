@@ -6,7 +6,6 @@
 
 var app = require('../app');
 var intervalIds = require('../intervalIds');
-var debug = require('debug')('newman-web:server');
 var http = require('http');
 var fs = require("fs");
 var Collection = require('postman-collection').Collection;
@@ -86,11 +85,16 @@ function onError(error) {
  */
 
 function onListening() {
+  var logger = log4js.getLogger('server');
+  logger.level = 'debug';
+  if (process.env.LOG_LEVEL) {
+    logger.level = process.env.LOG_LEVEL;
+  }
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger.debug('Listening on ' + bind);
 
   // sync local file with redis data
   var client = getRedis();
