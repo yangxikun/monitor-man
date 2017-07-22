@@ -25,6 +25,13 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 1. `docker run --env REDIS_HOST=10.17.48.200 --env REDIS_PORT=6379 --env TIMEZONE=Asia/Shanghai -p 3000:3000 yangxikun/monitor-man:1.0.0`
 1. now, visit http://127.0.0.1:3000
 
+build docker image:
+
+1. git clone this project
+1. npm install
+1. wget https://nodejs.org/dist/v6.11.1/node-v6.11.1-linux-x64.tar.xz
+1. docker build -t yangxikun/monitor-man:1.0.0 .
+
 #### Available config environment variable
 
 * REDIS_HOST
