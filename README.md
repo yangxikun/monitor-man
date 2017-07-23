@@ -1,12 +1,18 @@
 # monitor-man
+
 HTTP API monitor based on postman and newman. It provides webui for newman, and some other useful things.
 
 ![Home Page](https://github.com/yangxikun/monitor-man/raw/master/public/images/home.png)
 
 ## How it work
+
 1. setup monitor-man
 1. export your collection, data file, enviroment from postman, then upload to monitor-man
 1. monitor-man will setup a newman for monitor your test
+
+## Distribute
+
+The distribute branch is design for deploy monitor-man in multiple idc. Upload collection in one place, and run collection in multiple idc according to an environment variable value. See [Collection Create](https://github.com/yangxikun/monitor-man/wiki/Collection-Create)
 
 ## Setup
 
@@ -37,7 +43,7 @@ build docker image:
 1. git clone this project
 1. checkout distribute branch if needed
 1. npm install
-1. wget https://nodejs.org/dist/v6.11.1/node-v6.11.1-linux-x64.tar.xz
+1. wget https://nodejs.org/dist/v6.11.0/node-v6.11.0-linux-x64.tar.xz
 1. docker build -t yangxikun/monitor-man:1.0.0 .
 
 #### Available config environment variable
