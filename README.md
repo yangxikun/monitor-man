@@ -19,15 +19,23 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 1. set log level `export LOG_LEVEL=debug`
 1. run `node bin/www`
 
+> note: if you use distribute branch, set REDIS_RHOST, REDIS_WHOST.
+> And you need to set an environment to distinguish idc(eg export IDC=beijing).
+
 #### BY Docker
 
 1. `docker pull yangxikun/monitor-man`(https://hub.docker.com/r/yangxikun/monitor-man/)
-1. `docker run --env REDIS_HOST=10.17.48.200 --env REDIS_PORT=6379 --env TIMEZONE=Asia/Shanghai -p 3000:3000 yangxikun/monitor-man:1.0.0`
+1. or `docker pull yangxikun/monitor-man-distribute`(https://hub.docker.com/r/yangxikun/monitor-man-distribute/)
+1. `docker run --env REDIS_HOST=127.0.0.1 --env REDIS_PORT=6379 --env TIMEZONE=Asia/Shanghai -p 3000:3000 yangxikun/monitor-man:1.0.0`
 1. now, visit http://127.0.0.1:3000
+
+> note: if you use distribute branch, use "--env REDIS_RHOST=127.0.0.1 --env REDIS_WHOST=127.0.0.1".
+> And additional environment to distinguish idc "--env IDC=beijing"
 
 build docker image:
 
 1. git clone this project
+1. checkout distribute branch if needed
 1. npm install
 1. wget https://nodejs.org/dist/v6.11.1/node-v6.11.1-linux-x64.tar.xz
 1. docker build -t yangxikun/monitor-man:1.0.0 .
