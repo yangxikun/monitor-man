@@ -58,5 +58,14 @@ build docker image:
 ## Doc
 see [Wiki](https://github.com/yangxikun/monitor-man/wiki)
 
+## Roadmap
+
+* refactor with vue and koa(doing)
+* see last run result error message in home page
+* add tag to group collection
+* add some line charts and error list in collection view page
+* use monaco or ace js editor for handler create/modify
+* make a sandbox for debugging handler
+
 ## License
 This software is licensed under MIT. See the [LICENSE](LICENSE) file for more information.
