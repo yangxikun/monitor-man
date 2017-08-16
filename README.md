@@ -62,8 +62,8 @@ see [Wiki](https://github.com/yangxikun/monitor-man/wiki)
 
 * refactor with vue and koa(doing)
 * see last run result error message in home page
-* add tag to group collection
-* add some line charts and error list in collection view page
+* add tag to group collection(done)
+* add some line charts and error list in collection view page(50%)
 * use monaco or ace js editor for handler create/modify
 * make a sandbox for debugging handler
 
