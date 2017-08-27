@@ -60,12 +60,14 @@ see [Wiki](https://github.com/yangxikun/monitor-man/wiki)
 
 ## Roadmap
 
-* refactor with vue and koa(doing)
+* refactor with vue and koa(done)
 * see last run result error message in home page(done)
 * add tag to group collection(done)
 * add some line charts and error list in collection view page(done)
-* use monaco or ace js editor for handler create/modify(doing)
-* make a sandbox for debugging handler(doing)
+* use monaco or ace js editor for handler create/modify(done)
+* make a sandbox for debugging handler(done)
+
+> doing test.
 
 ## License
 This software is licensed under MIT. See the [LICENSE](LICENSE) file for more information.
