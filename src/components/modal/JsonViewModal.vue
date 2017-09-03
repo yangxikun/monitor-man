@@ -41,9 +41,15 @@
       };
     },
     watch: {
+      show(val) {
+        if (val) {
+          document.body.classList.add('modal-open');
+        } else {
+          document.body.classList.remove('modal-open');
+        }
+      },
       failures(val) {
         this.failureSelected = Object.keys(val)[0];
-        document.body.classList.add('modal-open');
       },
       failureSelected(id) {
         const uri = '/collection/'+this.collectionInfo.id+'/failure/' + id;
@@ -57,7 +63,6 @@
     methods: {
       close() {
         this.$emit('close');
-        document.body.classList.remove('modal-open');
       }
     }
   }
