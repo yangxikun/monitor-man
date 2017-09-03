@@ -45,7 +45,7 @@ build docker image:
 * LOG_LEVEL: default debug, see [log4js](https://www.npmjs.com/package/log4js)
 
 ## Doc
-see [Wiki](https://github.com/yangxikun/monitor-man/wiki), (need update)
+see [Wiki](https://github.com/yangxikun/monitor-man/wiki)
 
 ## License
 This software is licensed under MIT. See the [LICENSE](LICENSE) file for more information.
