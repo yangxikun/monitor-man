@@ -26,7 +26,7 @@ HTTP API monitor based on postman and newman. It provides webui for newman, and 
 #### BY Docker
 
 1. `docker pull yangxikun/monitor-man`(https://hub.docker.com/r/yangxikun/monitor-man/)
-1. `docker run --name monitor-man --env REDIS_HOST=10.17.16.5 --env REDIS_PORT=6379 --env REDIS_DB=1 --env REDIS_AUTH=foobar123 --env TIMEZONE=Asia/Shanghai -p 8889:8889 yangxikun/monitor-man:2.0.0`
+1. `docker run --name monitor-man --env REDIS_HOST=10.17.16.5 --env REDIS_PORT=6379 --env REDIS_DB=1 --env REDIS_AUTH=foobar123 --env TIMEZONE=Asia/Shanghai -p 8889:8889 yangxikun/monitor-man:2.0.1`
 1. now, visit http://127.0.0.1:8889
 
 build docker image:
@@ -34,7 +34,7 @@ build docker image:
 1. git clone this project
 1. npm install
 1. wget https://nodejs.org/dist/v8.4.0/node-v8.4.0-linux-x64.tar.xz
-1. docker build -t yangxikun/monitor-man:2.0.0 .
+1. docker build -t yangxikun/monitor-man:2.0.1 .
 
 #### Available config environment variable
 
