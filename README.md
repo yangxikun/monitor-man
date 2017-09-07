@@ -49,5 +49,11 @@ build docker image:
 ## Doc
 see [Wiki](https://github.com/yangxikun/monitor-man/wiki)
 
+## Write tests for APIs using Postman
+* [How to write automated tests for APIs using Postman – Part 1](http://blog.getpostman.com/2014/03/07/writing-automated-tests-for-apis-using-postman/)
+* [How to write automated tests for APIs with Postman – Part 2](http://blog.getpostman.com/2014/04/17/how-to-write-automated-tests-for-apis-with-postman-part-2/)
+* [Writing automated tests with Postman – Part 3](http://blog.getpostman.com/2014/05/09/writing-automated-tests-with-postman-part-3/)
+* [API testing tips from a Postman professional](http://blog.getpostman.com/2017/07/28/api-testing-tips-from-a-postman-professional/)
+
 ## License
 This software is licensed under MIT. See the [LICENSE](LICENSE) file for more information.
