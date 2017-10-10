@@ -75,7 +75,7 @@ const _newman = {
 
             for (let index in failureExecutions.failures) {
               const failureExecution = failureExecutions.failures[index];
-              const name = failureExecution.source.name + ': ' + failureExecution.error.message.substr(0, 80);
+              const name = failureExecution.source.name;
               const failureId = uuidv1();
               if (failureExecution.at.indexOf('assertion') === 0) {
                 const _failureId = failureId+'a'+i+index;
